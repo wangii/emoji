@@ -5,36 +5,34 @@ import (
 	"strings"
 )
 
-func charCodeToImgSrcHex(src []rune) string {
-	buf := make([]string, 0)
-
-	for _, char := range src {
-		buf = append(buf, fmt.Sprintf(`%x`, char))
-	}
-
-	return strings.Join(buf, `-`)
-}
+const (
+	TwemojiHTMLTemplate  = `<img src="%s" width="%d" height="%d" >`
+	TwemojiXHTMLTemplate = `<img src="%s" width="%d" height="%d" />`
+)
 
 func UnicodeToTwemoji(src string, size int, isXHTML bool) string {
-	for char, imgSrc := range char2imgSrc {
-		tag := fmt.Sprintf(
-			`<img src="%s" width="%d" height="%d" >`,
-			imgSrc,
-			size, size)
-
+	for str, img := range str2img {
+		var tpl string
 		if isXHTML {
-			tag = strings.Replace(tag, ` >`, ` />`, 1)
+			tpl = TwemojiXHTMLTemplate
+		} else {
+			tpl = TwemojiHTMLTemplate
 		}
 
-		src = strings.Replace(src, char, tag, -1)
+		tag := fmt.Sprintf(tpl, img, size, size)
+
+		src = strings.Replace(src, str, tag, -1)
 	}
 
 	return src
 }
 
-func BracketNameToUnicode(src string) string {
-	for name, char := range name2char {
-		src = strings.Replace(src, fmt.Sprintf(`:%s:`, name), char, -1)
+func EmojiTagToUnicode(src string) string {
+	for name, chars := range name2codes {
+		str := string(chars)
+		tag := strings.Join([]string{`:`, name, `:`}, ``)
+
+		src = strings.Replace(src, tag, str, -1)
 	}
 
 	return src

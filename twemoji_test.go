@@ -4,17 +4,8 @@ import (
 	"testing"
 )
 
-func TestCharCoceToImgSrcHex(t *testing.T) {
-	src := []rune("\u0030\u20E3")
-	ret := charCodeToImgSrcHex(src)
-
-	if ret != `30-20e3` {
-		t.Fatal(`failed to convert char to hex.`, ret)
-	}
-}
-
 func TestUnicodeToTwemojiImage(t *testing.T) {
-	src := "\u0030\u20E3"
+	src := string([]rune{0x30, 0xFE0F, 0x20E3})
 	caseA := UnicodeToTwemoji(src, 16, false)
 
 	if caseA != `<img src="//twemoji.maxcdn.com/svg/30-20e3.svg" width="16" height="16" >` {
@@ -27,11 +18,11 @@ func TestUnicodeToTwemojiImage(t *testing.T) {
 	}
 }
 
-func TestBracketNameToUnicode(t *testing.T) {
+func TestEmojiTagToUnicode(t *testing.T) {
 	src := `:+1:`
-	ret := BracketNameToUnicode(src)
+	ret := EmojiTagToUnicode(src)
 
-	if ret != "\u1F44D" {
+	if ret != string([]rune{0x1F44D}) {
 		t.Fatal(`failed to convert unicode from emoji bracket.`, ret)
 	}
 }
