@@ -11,3 +11,12 @@ func TestUnicodeToHTMLEntities(t *testing.T) {
 		t.Fatal(`failed to convert emoji unicode to html entities.`, ret)
 	}
 }
+
+func TestUnicodeToHTMLEntities2(t *testing.T) {
+	src := string([]rune{0x1f004})
+
+	if ret := UnicodeToHTMLEntities(src); ret != `&#x1F004;` {
+		t.Fatal(`failed to convert emoji unicode to html entities.`, ret)
+	}
+
+}

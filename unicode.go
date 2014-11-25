@@ -21,6 +21,20 @@ func UnicodeToHTMLEntities(src string) string {
 		entities := code2entities(chars)
 
 		src = strings.Replace(src, str, entities, -1)
+
+		chars2 := make([]rune, 0)
+		for _, char := range chars {
+			if char == '\uFE0F' {
+				continue
+			}
+
+			chars2 = append(chars2, char)
+		}
+
+		str = string(chars2)
+		entities = code2entities(chars2)
+
+		src = strings.Replace(src, str, entities, -1)
 	}
 
 	return src
