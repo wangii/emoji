@@ -18,11 +18,37 @@ func TestUnicodeToTwemojiImage(t *testing.T) {
 	}
 }
 
+func TestUnicodeToHTMLEntities(t *testing.T) {
+	src := string([]rune{0x30, 0xFE0F, 0x20E3})
+
+	if ret := UnicodeToHTMLEntities(src); ret != `&#x30;&#xFE0F;&#x20E3;` {
+		t.Fatal(`failed to convert emoji unicode to html entities.`, ret)
+	}
+}
+
+func TestUnicodeToHTMLEntities2(t *testing.T) {
+	src := string([]rune{0x1f004})
+
+	if ret := UnicodeToHTMLEntities(src); ret != `&#x1F004;` {
+		t.Fatal(`failed to convert emoji unicode to html entities.`, ret)
+	}
+
+}
+
 func TestEmojiTagToUnicode(t *testing.T) {
 	src := `:+1:`
 	ret := EmojiTagToUnicode(src)
 
 	if ret != string([]rune{0x1F44D}) {
 		t.Fatal(`failed to convert unicode from emoji bracket.`, ret)
+	}
+}
+
+func TestEmojiTagToHTMLEntities(t *testing.T) {
+	src := `:+1:`
+	ret := EmojiTagToHTMLEntities(src)
+
+	if ret != `&#x1F44D;` {
+		t.Fatal(`failed to convert emoji bracket to html entities.`, ret)
 	}
 }
