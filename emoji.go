@@ -2,12 +2,22 @@ package emoji
 
 import (
 	"fmt"
+	"regexp"
+	"strconv"
 	"strings"
+	"unicode/utf8"
 )
 
 const (
 	TwemojiHTMLTemplate  = `<img src="%s" width="%d" height="%d" >`
 	TwemojiXHTMLTemplate = `<img src="%s" width="%d" height="%d" />`
+)
+
+var (
+	hE10 = regexp.MustCompile(`&#[0-9]+;`)
+	hE16 = regexp.MustCompile(`&#x[A-Fa-f0-9]+;`)
+	nR10 = regexp.MustCompile(`[0-9]+`)
+	nR16 = regexp.MustCompile(`[A-Fa-f0-9]+`)
 )
 
 func code2entities(src []rune) string {
@@ -18,6 +28,22 @@ func code2entities(src []rune) string {
 	}
 
 	return strings.Join(ret, ``)
+}
+
+func hexlizeEntities(src string) string {
+	return hE10.ReplaceAllStringFunc(src, func(str string) string {
+		num, err := strconv.ParseInt(nR10.FindString(str), 10, 32)
+		if err != nil {
+			return str
+		}
+
+		char := rune(num)
+		if utf8.ValidRune(char) {
+			return code2entities([]rune{char})
+		}
+
+		return str
+	})
 }
 
 func EmojiTagToHTMLEntities(src string) string {
@@ -99,6 +125,32 @@ func UnicodeToTwemoji(src string, size int, isXHTML bool) string {
 		tag := fmt.Sprintf(tpl, img, size, size)
 
 		src = strings.Replace(src, str, tag, -1)
+	}
+
+	return src
+}
+
+func HTMLEntitiesToUnicode(src string) string {
+	src = hexlizeEntities(src)
+	for _, chars := range name2codes {
+		str := string(chars)
+		entities := code2entities(chars)
+
+		src = strings.Replace(src, entities, str, -1)
+
+		chars2 := make([]rune, 0)
+		for _, char := range chars {
+			if char == '\uFE0F' {
+				continue
+			}
+
+			chars2 = append(chars2, char)
+		}
+
+		str = string(chars2)
+		entities = code2entities(chars2)
+
+		src = strings.Replace(src, entities, str, -1)
 	}
 
 	return src

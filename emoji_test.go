@@ -68,3 +68,12 @@ func TestEmojiTagToTwemoji(t *testing.T) {
 		t.Fatal(`failed to convert emoji tag to twemoji`, ret)
 	}
 }
+
+func TestHTMLEntitiesToUnicode(t *testing.T) {
+	src := `&#126980;`
+	ret := HTMLEntitiesToUnicode(src)
+
+	if ret != string([]rune{0x1F004}) {
+		t.Fatal(`failed to html entities to unicode.`, ret)
+	}
+}
