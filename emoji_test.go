@@ -18,6 +18,20 @@ func TestUnicodeToTwemojiImage(t *testing.T) {
 	}
 }
 
+func TestUnicodeToTwemojiImage2(t *testing.T) {
+	src := string([]rune{0x1f004})
+	caseA := UnicodeToTwemoji(src, 16, false)
+
+	if caseA != `<img src="//twemoji.maxcdn.com/svg/1f004.svg" width="16" height="16" >` {
+		t.Fatal(`failed to convert emoji chars`, caseA)
+	}
+
+	caseB := UnicodeToTwemoji(src, 32, true)
+	if caseB != `<img src="//twemoji.maxcdn.com/svg/1f004.svg" width="32" height="32" />` {
+		t.Fatal(`failed to convert emoji chars`, caseB)
+	}
+}
+
 func TestUnicodeToHTMLEntities(t *testing.T) {
 	src := string([]rune{0x30, 0xFE0F, 0x20E3})
 

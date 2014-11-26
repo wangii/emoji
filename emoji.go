@@ -114,17 +114,36 @@ func UnicodeToHTMLEntities(src string) string {
 }
 
 func UnicodeToTwemoji(src string, size int, isXHTML bool) string {
-	for str, img := range str2img {
-		var tpl string
-		if isXHTML {
-			tpl = TwemojiXHTMLTemplate
-		} else {
-			tpl = TwemojiHTMLTemplate
+	for _, chars := range name2codes {
+		keyStr := string(chars)
+		img, ok := str2img[keyStr]
+
+		if ok {
+			str := string(chars)
+			var tpl string
+			if isXHTML {
+				tpl = TwemojiXHTMLTemplate
+			} else {
+				tpl = TwemojiHTMLTemplate
+			}
+
+			tag := fmt.Sprintf(tpl, img, size, size)
+
+			src = strings.Replace(src, str, tag, -1)
+
+			chars2 := make([]rune, 0)
+			for _, char := range chars {
+				if char == '\uFE0F' {
+					continue
+				}
+
+				chars2 = append(chars2, char)
+			}
+
+			str = string(chars2)
+			src = strings.Replace(src, str, tag, -1)
+
 		}
-
-		tag := fmt.Sprintf(tpl, img, size, size)
-
-		src = strings.Replace(src, str, tag, -1)
 	}
 
 	return src
