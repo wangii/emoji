@@ -40,7 +40,7 @@ func TestEmojiTagToUnicode(t *testing.T) {
 	ret := EmojiTagToUnicode(src)
 
 	if ret != string([]rune{0x1F44D}) {
-		t.Fatal(`failed to convert unicode from emoji bracket.`, ret)
+		t.Fatal(`failed to convert unicode from emoji tag.`, ret)
 	}
 }
 
@@ -49,6 +49,22 @@ func TestEmojiTagToHTMLEntities(t *testing.T) {
 	ret := EmojiTagToHTMLEntities(src)
 
 	if ret != `&#x1F44D;` {
-		t.Fatal(`failed to convert emoji bracket to html entities.`, ret)
+		t.Fatal(`failed to convert emoji tag to html entities.`, ret)
+	}
+}
+
+func TestEmojiTagToTwemoji(t *testing.T) {
+	src := `:+1:`
+	ret := EmojiTagToTwemoji(src, 16, true)
+
+	if ret != `<img src="//twemoji.maxcdn.com/svg/1f44d.svg" width="16" height="16" />` {
+		t.Fatal(`failed to convert emoji tag to twemoji`, ret)
+	}
+
+	src = `:white_small_square:`
+	ret = EmojiTagToTwemoji(src, 32, false)
+
+	if ret != `<img src="//twemoji.maxcdn.com/svg/25ab.svg" width="32" height="32" >` {
+		t.Fatal(`failed to convert emoji tag to twemoji`, ret)
 	}
 }

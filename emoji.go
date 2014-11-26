@@ -41,6 +41,27 @@ func EmojiTagToUnicode(src string) string {
 	return src
 }
 
+func EmojiTagToTwemoji(src string, size int, isXHTML bool) string {
+	for name, chars := range name2codes {
+		str := string(chars)
+		if img, ok := str2img[str]; ok {
+			var tpl string
+			if isXHTML {
+				tpl = TwemojiXHTMLTemplate
+			} else {
+				tpl = TwemojiHTMLTemplate
+			}
+
+			imgTag := fmt.Sprintf(tpl, img, size, size)
+			tagStr := strings.Join([]string{`:`, name, `:`}, ``)
+
+			src = strings.Replace(src, tagStr, imgTag, -1)
+		}
+	}
+
+	return src
+}
+
 func UnicodeToHTMLEntities(src string) string {
 	for _, chars := range name2codes {
 		str := string(chars)
