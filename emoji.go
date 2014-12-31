@@ -46,6 +46,9 @@ func hexlizeEntities(src string) string {
 	})
 }
 
+// EmojiTagToHTMLEntities is replacing emoji tag to html entities of emoji unicode.
+//
+// For example: :+1: => &#x1F44D;
 func EmojiTagToHTMLEntities(src string) string {
 	for name, chars := range name2codes {
 		tag := strings.Join([]string{`:`, name, `:`}, ``)
@@ -56,6 +59,9 @@ func EmojiTagToHTMLEntities(src string) string {
 	return src
 }
 
+// EmojiTagToUnicode is replacing emoji tag to unicode chars.
+//
+// For example: :+1: => rune(0x1F44D)
 func EmojiTagToUnicode(src string) string {
 	for name, chars := range name2codes {
 		str := string(chars)
@@ -67,6 +73,14 @@ func EmojiTagToUnicode(src string) string {
 	return src
 }
 
+// EmojiTagToTwemoji is replace emoji tag to twemoji's SVG link with MaxCDN.
+//
+//   Arguments:
+//     - src  (string) : source string
+//     - size (int)    : html img tag's height and width valu
+//     - isXHTML (bool): output is XHTML (true) or HTML (false)
+//
+// For Example: :+1: => <img src="//twemoji.maxcdn.com/svg/1f44d.svg" width="16" height="16" />
 func EmojiTagToTwemoji(src string, size int, isXHTML bool) string {
 	for name, chars := range name2codes {
 		str := string(chars)
@@ -88,6 +102,9 @@ func EmojiTagToTwemoji(src string, size int, isXHTML bool) string {
 	return src
 }
 
+// UnicodeToHTMLEntities is replacing unicode emoji chars to html entities.
+//
+// For Example: rune(0x1F44D) => &#x1F44D;
 func UnicodeToHTMLEntities(src string) string {
 	for _, chars := range name2codes {
 		str := string(chars)
@@ -113,6 +130,14 @@ func UnicodeToHTMLEntities(src string) string {
 	return src
 }
 
+// UnicodeToTwemoji is replacing unicode emoji chars to twemoji's SVG link with MaxCDN.
+//
+//   Arguments:
+//     - src  (string) : source string
+//     - size (int)    : html img tag's height and width valu
+//     - isXHTML (bool): output is XHTML (true) or HTML (false)
+//
+// For Example: rune(0x1F44D) => <img src="//twemoji.maxcdn.com/svg/1f44d.svg" width="16" height="16" />
 func UnicodeToTwemoji(src string, size int, isXHTML bool) string {
 	for _, chars := range name2codes {
 		keyStr := string(chars)
@@ -149,6 +174,9 @@ func UnicodeToTwemoji(src string, size int, isXHTML bool) string {
 	return src
 }
 
+// HTMLEntitiesToUnicode is replacing html entities of emoji unicode to unicode chars.
+//
+// For Example: &#x1F44D; => rune(0x1F44D)
 func HTMLEntitiesToUnicode(src string) string {
 	src = hexlizeEntities(src)
 	for _, chars := range name2codes {

@@ -1,6 +1,12 @@
- map.go is based by map is based by <https://github.com/melborne/emot/blob/master/lib/emot/map.rb>
-=================================================================================================
+LICENSES
+========
 
+USING LIBRARIES
+---------------
+
+### 1. ruby's [emot](https://github.com/melborne/emot/) (`map.go` is based by this library source code.)
+
+```
 Copyright (c) 2014 kyoendo
 
 MIT License
@@ -22,12 +28,19 @@ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
 NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- 
----
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
+```
 
-Source code of this package
-===========================
+### 2. [twemoji](https://github.com/twitter/twemoji)'s Graphics (this golang library is using to twemoji's SVG link with MaxCDN by generate emoji image link)
+
+```
+Copyright 2014 Twitter, Inc and other contributors
+
+CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/
+```
+
+THIS GOLANG LIBRARY
+-------------------
 
 The MIT License (MIT)
 
