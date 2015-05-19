@@ -59,6 +59,21 @@ func EmojiTagToHTMLEntities(src string) string {
 	return src
 }
 
+// UnicodeToEmojiTag is replacing emoji tag to unicode chars.
+//
+// For example: rune(0x1F44D) => :+1:
+func UnicodeToEmojiTag(src string) string {
+
+	for n, chars := range name2codes {
+		str := string(chars)
+		code := ":" + n + ":"
+
+		src = strings.Replace(src, str, code, -1)
+	}
+	
+	return src
+}
+
 // EmojiTagToUnicode is replacing emoji tag to unicode chars.
 //
 // For example: :+1: => rune(0x1F44D)

@@ -4,6 +4,18 @@ import (
 	"testing"
 )
 
+func TestUnicodeToEmojiTag(t *testing.T) {
+	src := `😛👌😇😌👏😒😍😊`
+	caseA := UnicodeToEmojiTag(src)
+	t.Log(caseA)
+
+	t.Log(EmojiTagToUnicode(caseA))
+	
+	if caseA != `<img src="//twemoji.maxcdn.com/svg/30-20e3.svg" width="16" height="16" >` {
+		t.Fatal(`failed to convert emoji chars`, caseA)
+	}
+}
+
 func TestUnicodeToTwemojiImage(t *testing.T) {
 	src := string([]rune{0x30, 0xFE0F, 0x20E3})
 	caseA := UnicodeToTwemoji(src, 16, false)
